@@ -1,19 +1,25 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import React from "react";
-import UserProfile from "./components/UserProfile";
+import React, {useState} from 'react'
+import './App.css';
+const App = () => {
+  const [details, setDetails] = useState({counter: 0, name: ""});
 
-function App() {
+  function increaseCounter() {
+    setDetails((prev) => ({
+      ...prev,
+      counter: prev.counter + 1,
+    }));
+  }
+    
+console.log(details)
   return (
     <div>
-      <h1>User Profiles</h1>
-      <UserProfile name="Alice" age="25" bio="Loves hiking and photography" />
-      <UserProfile name="Bob" age="30" bio="Avid traveler and foodie" />
-      <UserProfile name="Charlie" age="28" bio="Enjoys coding and gaming" />
+      <input type="text" onChange={(e) => (e.target.value)} />
+      <h1>
+        {details.name} has clicked {details.counter} times
+      </h1>
+      <button onClick={increaseCounter}>Increase</button>
     </div>
-  );
-}
+  )
+};
 
-export default App;
+export default App
