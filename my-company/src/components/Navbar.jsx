@@ -1,14 +1,5 @@
 import { Link } from 'react-router-dom'
 
-const navStyle = {
-  position: 'sticky',
-  top: 0,
-  zIndex: 10,
-  background: '#0b1b2a',
-  color: '#fff',
-  padding: '12px 24px',
-  boxShadow: '0 2px 12px rgba(0,0,0,.1)'
-}
 
 const barStyle = {
   maxWidth: 960,
@@ -62,7 +53,15 @@ function NavLink({ to, children }) {
 
 function Navbar() {
   return (
-    <header style={navStyle}>
+    <header style={{
+        position: 'sticky',
+        top: 0,
+        zIndex: 10,
+        backgroundColor: '#0b1b2a',
+        color: '#fff',
+        padding: '12px 24px',
+        boxShadow: '0 2px 12px rgba(0,0,0,.1)',
+      }}>
       <div style={barStyle}>
         <Link to="/" style={brandStyle}>MyCompany</Link>
         <nav style={linkWrapStyle}>
