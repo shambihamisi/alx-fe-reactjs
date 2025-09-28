@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import UserProfile from "./components/Userprofile";
 
 function App() {
   return (
