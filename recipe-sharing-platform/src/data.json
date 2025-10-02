@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "title": "Spaghetti Carbonara",
+    "summary": "A classic Italian pasta dish with eggs, cheese, bacon, and black pepper.",
+    "image": "https://images.unsplash.com/photo-1523986371872-9d3ba2e2f642?q=80&w=1200&auto=format&fit=crop"
+  },
+  {
+    "id": 2,
+    "title": "Chicken Tikka Masala",
+    "summary": "Grilled chicken chunks in a buttery, creamy tomato gravy.",
+    "image": "https://images.unsplash.com/photo-1604908554024-8b438ec7b243?q=80&w=1200&auto=format&fit=crop"
+  },
+  {
+    "id": 3,
+    "title": "Avocado Toast Deluxe",
+    "summary": "Sourdough toast with smashed avocado, chili flakes, and a soft-boiled egg.",
+    "image": "https://images.unsplash.com/photo-1551183053-bf91a1d81141?q=80&w=1200&auto=format&fit=crop"
+  },
+  {
+    "id": 4,
+    "title": "Beef Stir Fry",
+    "summary": "Quick wok-fried beef with colorful veggies in a savory soy-ginger sauce.",
+    "image": "https://images.unsplash.com/photo-1541014741483-4b3c7c3644b5?q=80&w=1200&auto=format&fit=crop"
+  },
+  {
+    "id": 5,
+    "title": "Blueberry Pancakes",
+    "summary": "Fluffy pancakes loaded with blueberries and drizzled with maple syrup.",
+    "image": "https://images.unsplash.com/photo-1495214783159-3503fd1b572d?q=80&w=1200&auto=format&fit=crop"
+  },
+  {
+    "id": 6,
+    "title": "Greek Salad",
+    "summary": "Crisp cucumbers, tomatoes, olives, and feta with lemon-oregano dressing.",
+    "image": "https://images.unsplash.com/photo-1540420773420-3366772f4999?q=80&w=1200&auto=format&fit=crop"
+  }
+]
