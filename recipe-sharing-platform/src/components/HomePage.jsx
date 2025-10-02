@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import RecipeCard from "./RecipeCard";
+import { Link } from "react-router-dom";
 
 const HomePage = () => {
   const [recipes, setRecipes] = useState([]);
@@ -9,7 +9,6 @@ const HomePage = () => {
   useEffect(() => {
     let alive = true;
 
-    // Dynamically import JSON from src so we still “load” it on mount.
     import("../data.json")
       .then((mod) => {
         if (!alive) return;
@@ -43,13 +42,16 @@ const HomePage = () => {
         {loading && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="rounded-2xl bg-white ring-1 ring-black/5 overflow-hidden">
-                <div className="aspect-[16/10] bg-gray-200 animate-pulse" />
+              <div
+                key={i}
+                className="rounded-xl bg-white ring-1 ring-black/5 overflow-hidden shadow animate-pulse"
+              >
+                <div className="aspect-[16/10] bg-gray-200" />
                 <div className="p-5 space-y-3">
-                  <div className="h-5 w-2/3 bg-gray-200 animate-pulse rounded" />
-                  <div className="h-4 w-full bg-gray-200 animate-pulse rounded" />
-                  <div className="h-4 w-5/6 bg-gray-200 animate-pulse rounded" />
-                  <div className="h-9 w-28 bg-gray-200 animate-pulse rounded" />
+                  <div className="h-5 w-2/3 bg-gray-200 rounded" />
+                  <div className="h-4 w-full bg-gray-200 rounded" />
+                  <div className="h-4 w-5/6 bg-gray-200 rounded" />
+                  <div className="h-9 w-28 bg-gray-200 rounded" />
                 </div>
               </div>
             ))}
@@ -63,14 +65,42 @@ const HomePage = () => {
           </div>
         )}
 
-        {/* Grid of recipe cards */}
+        {/* Grid of recipe cards with hover & shadow */}
         {!loading && !error && (
           <div
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4
-                       gap-6"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
           >
-            {recipes.map((r) => (
-              <RecipeCard key={r.id} recipe={r} />
+            {recipes.map((recipe) => (
+              <div
+                key={recipe.id}
+                className="bg-white rounded-2xl shadow-sm ring-1 ring-black/5 overflow-hidden
+                           transition hover:shadow-xl hover:-translate-y-1 hover:scale-[1.01] group"
+              >
+                <div className="aspect-[16/10] overflow-hidden">
+                  <img
+                    src={recipe.image}
+                    alt={recipe.title}
+                    className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+                  />
+                </div>
+                <div className="p-5">
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    {recipe.title}
+                  </h3>
+                  <p className="mt-2 text-sm text-gray-600">{recipe.summary}</p>
+                  <div className="mt-4">
+                    <Link
+                      to={`/recipe/${recipe.id}`}
+                      className="inline-flex items-center gap-2 text-sm font-medium
+                                 text-white bg-indigo-600 px-3 py-2 rounded-lg
+                                 hover:bg-indigo-700 focus:outline-none focus:ring-2
+                                 focus:ring-indigo-500"
+                    >
+                      View Recipe
+                    </Link>
+                  </div>
+                </div>
+              </div>
             ))}
           </div>
         )}
