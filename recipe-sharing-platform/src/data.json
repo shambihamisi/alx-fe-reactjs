@@ -12,7 +12,7 @@
       "Freshly ground black pepper",
       "Salt"
     ],
-    "steps": [
+    "instructions": [
       "Cook spaghetti in salted boiling water until al dente.",
       "Crisp pancetta in a pan; remove from heat.",
       "Whisk eggs, yolk, cheese, and pepper in a bowl.",
@@ -35,7 +35,7 @@
       "2 tbsp butter",
       "Salt & garam masala"
     ],
-    "steps": [
+    "instructions": [
       "Marinate chicken in yogurt and tikka paste; grill or pan-sear.",
       "Sauté onion in butter; add tomato puree and simmer.",
       "Stir in cream and spices.",

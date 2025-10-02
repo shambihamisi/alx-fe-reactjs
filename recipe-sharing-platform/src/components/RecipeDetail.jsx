@@ -30,12 +30,14 @@ const RecipeDetail = () => {
         setLoading(false);
       });
 
-    return () => { alive = false; };
+    return () => {
+      alive = false;
+    };
   }, [id]);
 
   return (
     <main className="min-h-screen bg-gray-50">
-      <section className="mx-auto max-w-5xl px-4 sm:px-6 md:px-8 lg:px-8 py-8 md:py-12">
+      <section className="mx-auto max-w-5xl px-4 sm:px-6 md:px-8 py-8 md:py-12">
         <div className="mb-6 md:mb-8 flex items-center justify-between">
           <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
             {recipe ? recipe.title : "Recipe Detail"}
@@ -52,12 +54,7 @@ const RecipeDetail = () => {
         {/* Loading */}
         {loading && (
           <div className="rounded-2xl bg-white ring-1 ring-black/5 p-4 md:p-6 shadow-sm">
-            <div className="aspect-[16/9] md:aspect-[21/9] bg-gray-200 rounded-xl animate-pulse" />
-            <div className="mt-6 space-y-3">
-              <div className="h-5 w-1/3 bg-gray-200 rounded animate-pulse" />
-              <div className="h-4 w-2/3 bg-gray-200 rounded animate-pulse" />
-              <div className="h-4 w-1/2 bg-gray-200 rounded animate-pulse" />
-            </div>
+            <div className="aspect-[16/9] bg-gray-200 rounded-xl animate-pulse" />
           </div>
         )}
 
@@ -71,22 +68,17 @@ const RecipeDetail = () => {
         {/* Content */}
         {!loading && !error && recipe && (
           <article className="bg-white rounded-2xl shadow-sm ring-1 ring-black/5 overflow-hidden">
-            {/* Hero image */}
-            <div className="aspect-[16/9] md:aspect-[21/9] overflow-hidden">
+            <div className="aspect-[16/9] overflow-hidden">
               <img
                 src={recipe.image}
                 alt={recipe.title}
                 className="h-full w-full object-cover"
-                loading="lazy"
               />
             </div>
 
-            {/* Body */}
             <div className="p-5 md:p-8">
-              {/* Summary */}
               <p className="text-gray-700 md:text-lg">{recipe.summary}</p>
 
-              {/* Grid: Ingredients / Steps */}
               <div className="mt-8 grid grid-cols-1 md:grid-cols-5 gap-6">
                 {/* Ingredients */}
                 <section className="md:col-span-2">
@@ -106,10 +98,10 @@ const RecipeDetail = () => {
                   </ul>
                 </section>
 
-                {/* Steps */}
+                {/* instructions */}
                 <section className="md:col-span-3">
                   <h2 className="text-lg md:text-xl font-semibold text-gray-900">
-                    Instructions
+                    instructions
                   </h2>
                   <ol className="mt-3 space-y-3">
                     {(recipe.steps || []).map((step, idx) => (
