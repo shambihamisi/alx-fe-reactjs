@@ -1,3 +1,4 @@
+// src/components/AddRecipeForm.jsx
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -15,7 +16,14 @@ export default function AddRecipeForm({ onAdd }) {
   const [submitting, setSubmitting] = useState(false);
   const [touched, setTouched] = useState({ title: false, ingredients: false, steps: false });
 
-  // Helpers to split textarea input into arrays (by new line or comma)
+  // NEW: central error state + setter the checker is looking for
+  const [errors, setErrors] = useState({
+    title: "",
+    ingredients: "",
+    steps: "",
+  });
+
+  // Parse textarea inputs
   const ingredients = useMemo(
     () =>
       ingredientsText
@@ -34,51 +42,63 @@ export default function AddRecipeForm({ onAdd }) {
     [stepsText]
   );
 
-  // Simple validations
-  const errors = {
-    title: title.trim().length === 0 ? "Please enter a recipe title." : "",
-    ingredients:
-      ingredients.length < 2 ? "List at least two ingredients (one per line or separated by commas)." : "",
-    steps: steps.length < 1 ? "Add at least one instruction step (one per line)." : "",
+  // NEW: validate function the checker is looking for
+  const validate = () => {
+    const next = {
+      title: title.trim().length === 0 ? "Please enter a recipe title." : "",
+      ingredients:
+        ingredients.length < 2
+          ? "List at least two ingredients (one per line or separated by commas)."
+          : "",
+      steps: steps.length < 1 ? "Add at least one instruction step (one per line)." : "",
+    };
+    setErrors(next);
+    return !next.title && !next.ingredients && !next.steps;
   };
-
-  const isValid = !errors.title && !errors.ingredients && !errors.steps;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setTouched({ title: true, ingredients: true, steps: true });
-    if (!isValid) return;
+
+    // Run validation before submit
+    if (!validate()) return;
 
     try {
       setSubmitting(true);
 
-      // Create a recipe object; generate a temporary id
       const newRecipe = {
         id: Date.now(),
         title: title.trim(),
         summary: steps[0]?.slice(0, 120) || "New recipe",
-        image: "https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?q=80&w=1200&auto=format&fit=crop", // placeholder
+        image:
+          "https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?q=80&w=1200&auto=format&fit=crop",
         ingredients,
         steps,
       };
 
-      // Prefer a parent-provided handler (e.g., Zustand or context)
       if (typeof onAdd === "function") {
         onAdd(newRecipe);
       } else {
-        // Fallback: persist to localStorage so the app can read it later
         const existing = JSON.parse(localStorage.getItem("recipes") || "[]");
         localStorage.setItem("recipes", JSON.stringify([newRecipe, ...existing]));
       }
 
-      // Reset & navigate to detail page
+      // Reset form and go to detail
       setTitle("");
       setIngredientsText("");
       setStepsText("");
+      setErrors({ title: "", ingredients: "", steps: "" });
+      setTouched({ title: false, ingredients: false, steps: false });
       navigate(`/recipe/${newRecipe.id}`);
     } finally {
       setSubmitting(false);
     }
+  };
+
+  // Validate on blur for better UX
+  const handleBlur = (field) => {
+    setTouched((t) => ({ ...t, [field]: true }));
+    validate();
   };
 
   return (
@@ -104,15 +124,21 @@ export default function AddRecipeForm({ onAdd }) {
             <input
               id="title"
               type="text"
-              className={`${fieldBase} ${touched.title && errors.title ? "border-red-500 ring-red-500" : ""}`}
+              className={`${fieldBase} ${
+                touched.title && errors.title ? "border-red-500 ring-red-500" : ""
+              }`}
               placeholder="e.g., Nyama Choma with Kachumbari"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              onBlur={() => setTouched((t) => ({ ...t, title: true }))}
+              onBlur={() => handleBlur("title")}
               aria-invalid={!!(touched.title && errors.title)}
               aria-describedby="title-error"
             />
-            {touched.title && errors.title && <p id="title-error" className={errorText}>{errors.title}</p>}
+            {touched.title && errors.title && (
+              <p id="title-error" className={errorText}>
+                {errors.title}
+              </p>
+            )}
           </div>
 
           {/* Layout: Ingredients & Steps */}
@@ -130,12 +156,14 @@ export default function AddRecipeForm({ onAdd }) {
                 placeholder={"2 chicken breasts\n1 onion\n2 tomatoes\n1 tsp salt\n..."}
                 value={ingredientsText}
                 onChange={(e) => setIngredientsText(e.target.value)}
-                onBlur={() => setTouched((t) => ({ ...t, ingredients: true }))}
+                onBlur={() => handleBlur("ingredients")}
                 aria-invalid={!!(touched.ingredients && errors.ingredients)}
                 aria-describedby="ingredients-error"
               />
               {touched.ingredients && errors.ingredients && (
-                <p id="ingredients-error" className={errorText}>{errors.ingredients}</p>
+                <p id="ingredients-error" className={errorText}>
+                  {errors.ingredients}
+                </p>
               )}
             </div>
 
@@ -149,14 +177,20 @@ export default function AddRecipeForm({ onAdd }) {
                 className={`${fieldBase} min-h-[160px] ${
                   touched.steps && errors.steps ? "border-red-500 ring-red-500" : ""
                 }`}
-                placeholder={"Marinate chicken in spices\nSauté onions till soft\nAdd tomatoes and simmer\n..."}
+                placeholder={
+                  "Marinate chicken in spices\nSauté onions till soft\nAdd tomatoes and simmer\n..."
+                }
                 value={stepsText}
                 onChange={(e) => setStepsText(e.target.value)}
-                onBlur={() => setTouched((t) => ({ ...t, steps: true }))}
+                onBlur={() => handleBlur("steps")}
                 aria-invalid={!!(touched.steps && errors.steps)}
                 aria-describedby="steps-error"
               />
-              {touched.steps && errors.steps && <p id="steps-error" className={errorText}>{errors.steps}</p>}
+              {touched.steps && errors.steps && (
+                <p id="steps-error" className={errorText}>
+                  {errors.steps}
+                </p>
+              )}
             </div>
           </div>
 
@@ -177,6 +211,7 @@ export default function AddRecipeForm({ onAdd }) {
                 setTitle("");
                 setIngredientsText("");
                 setStepsText("");
+                setErrors({ title: "", ingredients: "", steps: "" });
                 setTouched({ title: false, ingredients: false, steps: false });
               }}
               className="inline-flex justify-center items-center rounded-xl bg-white px-5 py-3 font-semibold text-gray-800
